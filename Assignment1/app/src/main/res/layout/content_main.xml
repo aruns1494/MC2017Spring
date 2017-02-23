@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.ssaurel.testgraphview.MainActivity" >
+
+    <!-- we add graph view to display -->
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Patient ID"
+        android:id="@+id/patientID"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="120dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/patientIDtext"
+        android:layout_above="@+id/PatientName"
+        android:layout_alignEnd="@+id/graph"
+        android:layout_marginEnd="52dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Patient Name"
+        android:id="@+id/PatientName"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/patientID"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text=""
+        android:ems="7"
+        android:id="@+id/PatientNametext"
+        android:layout_above="@+id/Age"
+        android:layout_alignStart="@+id/patientIDtext" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Age"
+        android:id="@+id/Age"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/PatientName"
+        android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="5"
+        android:id="@+id/Agetext"
+        android:layout_alignBottom="@+id/Age"
+        android:layout_alignStart="@+id/PatientNametext" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Sex"
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/radioGroup"
+        android:layout_alignParentStart="true" />
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="60dip"
+        android:id="@+id/radioGroup"
+        android:layout_below="@+id/Agetext"
+        android:layout_toStartOf="@+id/Agetext">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male"
+            android:id="@+id/male"
+            android:checked="true" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female"
+            android:id="@+id/femalleradio"
+            android:checked="false" />
+
+    </RadioGroup>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" RUN "
+        android:id="@+id/run"
+        android:layout_below="@+id/radioGroup"
+        android:layout_alignStart="@+id/Agetext" />
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" STOP "
+        android:id="@+id/stop"
+        android:layout_alignTop="@+id/run"
+        android:layout_alignEnd="@+id/graph" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Group 24"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/stop"
+        android:textColor="#f2124a" />
+
+</RelativeLayout>
+
