@@ -45,12 +45,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Helper db = null;
     SQLiteDatabase sqldb =null;
     String tableName = new String();
-
+    Button u,d;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context=this;
+        u = (Button) findViewById(R.id.upload);
+        d = (Button) findViewById(R.id.download);
+        u.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadDatabase(v);
+            }
+        });
+        d.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadDatabase(v);
+            }
+        });
         db = new Helper(context);
         sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -68,14 +82,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Random r = new Random();
             random_val[i] = r.nextFloat();
         }
-        Button button = (Button) findViewById(R.id.start);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button start = (Button) findViewById(R.id.startButton);
+        start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 getFormValues(v);
                 flag=true;
             }
         });
-        Button stop = (Button) findViewById(R.id.stop);
+        Button stop = (Button) findViewById(R.id.stopButton);
         stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
@@ -104,31 +118,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     String result="";
                     if(tableName.isEmpty()==false){
                         result=getTop10();
-                        Toast.makeText(context,result,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context,result,Toast.LENGTH_LONG).show();
                         String[] data = result.split("\n");
-                        System.out.print(data);
+                        //System.out.print(data);
                         if(data.length>=1)
                         {
                             try {
-                                DataPoint[] dpx = new DataPoint[data.length];
-                                DataPoint[] dpy = new DataPoint[data.length];
-                                DataPoint[] dpz = new DataPoint[data.length];
-                                int ct = 0;
+                                DataPoint[] px = new DataPoint[data.length];
+                                DataPoint[] py = new DataPoint[data.length];
+                                DataPoint[] pz = new DataPoint[data.length];
+                                int count = 0;
                                 for (int j = data.length - 1; j >= 0; j--) {
                                     String i = data[j];
                                     String[] temp = i.split(" ");
-                                    dpx[ct] = new DataPoint(Long.parseLong(temp[0]), Double.parseDouble(temp[1]));
-                                    dpy[ct] = new DataPoint(Long.parseLong(temp[0]), Double.parseDouble(temp[2]));
-                                    dpz[ct] = new DataPoint(Long.parseLong(temp[0]), Double.parseDouble(temp[3]));
-                                    ct++;
+                                    px[count] = new DataPoint(Long.parseLong(temp[0]), Double.parseDouble(temp[1]));
+                                    py[count] = new DataPoint(Long.parseLong(temp[0]), Double.parseDouble(temp[2]));
+                                    pz[count] = new DataPoint(Long.parseLong(temp[0]), Double.parseDouble(temp[3]));
+                                    count++;
                                 }
-                            series = new LineGraphSeries<DataPoint>(dpx);
+                            series = new LineGraphSeries<DataPoint>(px);
                             series.setColor(Color.BLACK);
                             graph.addSeries(series);
-                            series = new LineGraphSeries<DataPoint>(dpy);
+                            series = new LineGraphSeries<DataPoint>(py);
                             series.setColor(Color.RED);
                             graph.addSeries(series);
-                            series = new LineGraphSeries<DataPoint>(dpz);
+                            series = new LineGraphSeries<DataPoint>(pz);
                             series.setColor(Color.GREEN);
                             graph.addSeries(series);
                             graph.getViewport().setXAxisBoundsManual(true);
@@ -138,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             graph.getViewport().setMinX(min);
 
                             } catch(Exception e) {
-                                Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -236,17 +250,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             else
                 Toast.makeText(this, "Wrong input", Toast.LENGTH_LONG).show();
             Toast.makeText(this, name+'_'+id+'_'+age+'_'+gender, Toast.LENGTH_LONG).show();
-            createTable(id,name,age,gender);
+            //createTable(id,name,age,gender);
             t1=new Thread(new Runnable(){
                 public void run(){
 
-                    AccelerometerData ar;
+                    AccelerometerData ad;
                     try{
                         while(true){
                             Long tsLong = System.currentTimeMillis()/1000;
                             String temp = String.valueOf(tsLong);
-                            ar=new AccelerometerData(temp,ax,ay,az);
-                            db.addDataToTable(ar,tableName);
+                            ad=new AccelerometerData(temp,ax,ay,az);
+                            db.addDataToTable(ad,tableName);
                             Thread.sleep(1000);
                         }}catch (InterruptedException e){
 
@@ -255,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             });
             t1.start();
         }catch(InputMismatchException ime){
-            Toast.makeText(this,"Wrong input",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Invalid Input",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -263,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         sqldb=db.getWritableDatabase();
         tableName=name+'_'+id+'_'+age+'_'+gender;
-        sqldb.execSQL("CREATE TABLE IF NOT EXISTS "+tableName+"(timestamp varchar(10) primary key,xValue float, yValue float, zValue float)");
+        sqldb.execSQL("CREATE TABLE IF NOT EXISTS "+tableName+"(timestamp varchar(10),xValue float, yValue float, zValue float)");
     }
 
     public void uploadDatabase(View view){

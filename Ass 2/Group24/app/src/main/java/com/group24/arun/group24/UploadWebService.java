@@ -2,8 +2,6 @@ package com.group24.arun.group24;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.DataOutputStream;
@@ -54,6 +52,20 @@ public class UploadWebService extends AsyncTask<String, Integer, String> {
         String dbURL = "https://impact.asu.edu/CSE535Spring17Folder/UploadToServer.php";
         String dbFileLocation = "/data/data/com.group24.arun.group24/databases/Group24";
         try {
+            HttpsURLConnection con = null;
+
+            int bRead, bAvail, bSize;
+            byte[] buffer;
+            int maxBufferSize = 1048576;
+
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+
+            DataOutputStream dos = null;
+            FileInputStream fis = null;
+            File dbFile = null;
+
             TrustManager[] mgr = new TrustManager[]{new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
@@ -73,24 +85,11 @@ public class UploadWebService extends AsyncTask<String, Integer, String> {
                 sc.init(null, mgr, new java.security.SecureRandom());
                 HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             } catch (KeyManagementException kmex) {
-                return kmex.toString();
+                kmex.printStackTrace();
             } catch (NoSuchAlgorithmException nsae) {
-                return nsae.toString();
+                nsae.printStackTrace();
             }
 
-            HttpsURLConnection con = null;
-
-            int bRead, bAvail, bSize;
-            byte[] buffer;
-            int maxBufferSize = 1048576;
-
-            String lineEnd = "\r\n";
-            String twoHyphens = "--";
-            String boundary = "*****";
-
-            DataOutputStream dos = null;
-            FileInputStream fis = null;
-            File dbFile = null;
             try {
                 dbFile = new File(dbFileLocation);
                 fis = new FileInputStream(dbFile);

@@ -28,7 +28,7 @@ public class Helper extends SQLiteOpenHelper {
             val.put("xValue",ar.getxVal());
             val.put("yValue",ar.getyVal());
             val.put("zValue",ar.getzVal());
-            db.insert(tableName,null,val);
+            db.insert(tablename,null,val);
         }
         catch (Exception e){
         }
