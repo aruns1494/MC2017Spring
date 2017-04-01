@@ -21,3 +21,4 @@ INSTRUCTIONS FOR CREATING THE LOCAL ANDROID PROJECT
 UNTICK everything else.
 
 5. You can either add activities if u feel like or u can click on "Add No Activity" and then Copy Paste from the local repo.
+
